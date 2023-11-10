@@ -38,4 +38,17 @@ const getModelYears = async (req, res, next) => {
     }
 };
 
-module.exports = { getBrands, getModels, getModelYears };
+const getValue = async (req, res, next) => {
+    try {
+        const { vehicleType } = req;
+        const { brandId, modelId, modelYearId } = req.params;
+
+        const response = await fipeApiServices.requestValue(vehicleType, brandId, modelId, modelYearId);
+
+        return res.status(200).json(response);
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = { getBrands, getModels, getModelYears, getValue };
