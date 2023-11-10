@@ -141,7 +141,7 @@ const requestValueByFipeAndModelYear = async (fipeCode, modelYearId) => {
     return response;
 };
 
-const requestValueByFipe = async (fipeCode) => {
+const requestValuesByFipe = async (fipeCode) => {
     let modelYearsIds = [];
     let code = '0';
 
@@ -200,4 +200,4 @@ const findModelId = async (vehicleType, brandId, model) => {
     return modelId;
 };
 
-module.exports = { requestBrands, requestModels, requestModelYears, requestValue, requestValueByFipeAndModelYear, requestValueByFipe };
+module.exports = { requestBrands, requestModels, requestModelYears, requestValue, requestValueByFipeAndModelYear, requestValuesByFipe };
