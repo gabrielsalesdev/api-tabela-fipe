@@ -8,3 +8,25 @@ const requestReferenceTable = async () => {
 
     return response;
 };
+
+const requestBrands = async (vehicleType) => {
+    const body = {
+        "codigoTabelaReferencia": await requestReferenceTable(),
+        "codigoTipoVeiculo": vehicleType
+    };
+
+    const { data } = await axios.post('http://veiculos.fipe.org.br/api/veiculos/ConsultarMarcas', body);
+    verifyError(data);
+
+    const response = data.map(item => {
+        return {
+            idMarca: item.Value,
+            nomeMarca: item.Label,
+            tipoVeiculo: vehicleType
+        }
+    });
+
+    return response;
+};
+
+module.exports = { requestBrands };
