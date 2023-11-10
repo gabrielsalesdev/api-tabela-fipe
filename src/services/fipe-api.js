@@ -41,5 +41,26 @@ const requestBrands = async (vehicleType) => {
     return response;
 };
 
+const requestModels = async (vehicleType, brandId) => {
+    const body = {
+        "codigoTabelaReferencia": await requestReferenceTable(),
+        "codigoTipoVeiculo": vehicleType,
+        "codigoMarca": brandId
+    };
 
-module.exports = { requestBrands };
+    const { data } = await axios.post('http://veiculos.fipe.org.br/api/veiculos/ConsultarModelos', body);
+    verifyError(data);
+
+    const response = data.Modelos.map(item => {
+        return {
+            idMarca: brandId,
+            idModelo: item.Value.toString(),
+            nomeModelo: item.Label,
+            tipoVeiculo: vehicleType
+        }
+    });
+
+    return response;
+};
+
+module.exports = { requestBrands, requestModels };
