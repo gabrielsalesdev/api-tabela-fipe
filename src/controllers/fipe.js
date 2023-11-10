@@ -1,6 +1,6 @@
 const { fipeApiServices } = require('../services/index');
 
-const getVehicleValueByFipe = async (req, res, next) => {
+const getVehicleValuesByFipe = async (req, res, next) => {
     try {
         const { fipeCode } = req.params;
 
@@ -24,4 +24,4 @@ const getVehicleValueByFipeAndModelYear = async (req, res, next) => {
     }
 };
 
-module.exports = { getVehicleValueByFipe, getVehicleValueByFipeAndModelYear };
+module.exports = { getVehicleValuesByFipe, getVehicleValueByFipeAndModelYear };
