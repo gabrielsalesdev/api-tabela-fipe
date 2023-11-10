@@ -186,4 +186,18 @@ const requestValueByFipe = async (fipeCode) => {
     return response;
 };
 
+const findBrandId = async (vehicleType, brand) => {
+    const brands = await requestBrands(vehicleType);
+    const brandFound = brands.find(i => i.nomeMarca === brand);
+    const brandId = brandFound.idMarca;
+    return brandId;
+};
+
+const findModelId = async (vehicleType, brandId, model) => {
+    const models = await requestModels(vehicleType, brandId);
+    const modelFound = models.find(i => i.nomeModelo === model);
+    const modelId = modelFound.idModelo;
+    return modelId;
+};
+
 module.exports = { requestBrands, requestModels, requestModelYears, requestValue, requestValueByFipeAndModelYear, requestValueByFipe };
