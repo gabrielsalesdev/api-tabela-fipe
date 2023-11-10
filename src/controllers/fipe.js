@@ -12,4 +12,16 @@ const getVehicleValueByFipe = async (req, res, next) => {
     }
 };
 
-module.exports = { getVehicleValueByFipe };
+const getVehicleValueByFipeAndModelYear = async (req, res, next) => {
+    try {
+        const { fipeCode, modelYearId } = req.params;
+
+        const response = await fipeApiServices.requestValueByFipeAndModelYear(fipeCode, modelYearId);
+
+        return res.json(response);
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = { getVehicleValueByFipe, getVehicleValueByFipeAndModelYear };
