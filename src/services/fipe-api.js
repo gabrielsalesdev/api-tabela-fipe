@@ -153,4 +153,37 @@ const requestValueByFipeAndModelYear = async (fipeCode, modelYearId) => {
     return response;
 };
 
-module.exports = { requestBrands, requestModels, requestModelYears, requestValue };
+const requestValueByFipe = async (fipeCode) => {
+    let modelYearsIds = [];
+    let code = '0';
+
+    for (let i = 1; i <= 3; i++) {
+        const body = {
+            "codigoTabelaReferencia": 303,
+            "codigoTipoVeiculo": i,
+            "modeloCodigoExterno": fipeCode
+        }
+
+        const { data } = await axios.post('https://veiculos.fipe.org.br/api/veiculos/ConsultarAnoModeloPeloCodigoFipe', body);
+
+        if (data.codigo && data.codigo === '2') code = '2';
+
+        if (Array.isArray(data)) {
+            for (const item of data) {
+                modelYearsIds.push(item.Value);
+            }
+        }
+    }
+
+    if (modelYearsIds.length === 0) verifyError({ codigo: code });
+
+    let response = [];
+
+    for (const modelYearId of modelYearsIds) {
+        response.push(await requestValueByFipeAndModelYear(fipeCode, modelYearId));
+    }
+
+    return response;
+};
+
+module.exports = { requestBrands, requestModels, requestModelYears, requestValue, requestValueByFipeAndModelYear, requestValueByFipe };
