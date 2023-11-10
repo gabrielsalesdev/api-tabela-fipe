@@ -4,7 +4,7 @@ const getVehicleValuesByFipe = async (req, res, next) => {
     try {
         const { fipeCode } = req.params;
 
-        const response = await fipeApiServices.requestValueByFipe(fipeCode);
+        const response = await fipeApiServices.requestValuesByFipe(fipeCode);
 
         return res.json(response);
     } catch (error) {
