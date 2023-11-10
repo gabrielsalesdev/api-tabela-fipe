@@ -8,5 +8,6 @@ const { vehiclesMiddlewares } = require('../middlewares/index');
 router.get('/:vehicle', vehiclesMiddlewares.validateType, vehicleControllers.getBrands);
 router.get('/:vehicle/:brandId', vehiclesMiddlewares.validateType, vehicleControllers.getModels);
 router.get('/:vehicle/:brandId/:modelId', vehiclesMiddlewares.validateType, vehicleControllers.getModelYears);
+router.get('/:vehicle/:brandId/:modelId/:modelYearId', vehiclesMiddlewares.validateType, vehicleControllers.getValue);
 
 module.exports = router;
