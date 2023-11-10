@@ -63,4 +63,28 @@ const requestModels = async (vehicleType, brandId) => {
     return response;
 };
 
-module.exports = { requestBrands, requestModels };
+const requestModelYears = async (vehicleType, brandId, modelId) => {
+    const body = {
+        "codigoTabelaReferencia": await requestReferenceTable(),
+        "codigoTipoVeiculo": vehicleType,
+        "codigoMarca": brandId,
+        "codigoModelo": modelId
+    };
+
+    const { data } = await axios.post('http://veiculos.fipe.org.br/api/veiculos/ConsultarAnoModelo', body);
+    verifyError(data);
+
+    const response = data.map(item => {
+        return {
+            idMarca: brandId,
+            idModelo: modelId,
+            idAnoModelo: item.Value,
+            nomeAnoModelo: item.Label,
+            tipoVeiculo: vehicleType
+        }
+    });
+
+    return response;
+};
+
+module.exports = { requestBrands, requestModels, requestModelYears };
