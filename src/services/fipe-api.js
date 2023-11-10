@@ -118,4 +118,39 @@ const requestValue = async (vehicleType, brandId, modelId, modelYearId) => {
     return response;
 };
 
+const requestValueByFipeAndModelYear = async (fipeCode, modelYearId) => {
+    let vehicleType, brand, model;
+    let code = '0';
+
+    for (let i = 1; i <= 3; i++) {
+        const body = {
+            "codigoTabelaReferencia": await requestReferenceTable(),
+            "codigoTipoVeiculo": i,
+            "anoModelo": modelYearId.split('-')[0],
+            "modeloCodigoExterno": fipeCode,
+            "codigoTipoCombustivel": modelYearId.split('-')[1],
+            "tipoConsulta": "codigo"
+        }
+
+        const { data } = await axios.post('https://veiculos.fipe.org.br/api/veiculos/ConsultarValorComTodosParametros', body);
+
+        if (data.codigo && data.codigo === '2') code = '2';
+
+        if (!data.codigo) {
+            vehicleType = i.toString();
+            brand = data.Marca;
+            model = data.Modelo;
+        }
+    }
+
+    if (!vehicleType) verifyError({ codigo: code });
+
+    const brandId = await findBrandId(vehicleType, brand);
+    const modelId = await findModelId(vehicleType, brandId, model);
+
+    const response = await requestValue(vehicleType, brandId, modelId, modelYearId);
+
+    return response;
+};
+
 module.exports = { requestBrands, requestModels, requestModelYears, requestValue };
