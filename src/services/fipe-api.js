@@ -1,18 +1,6 @@
 const axios = require('axios');
 const { HttpError } = require('../errors/index');
 
-const verifyError = (data) => {
-    if (data.codigo) {
-        switch (data.codigo) {
-            case '0':
-                throw new HttpError('Veículo não encontrado', 404);
-            case '2':
-                throw new HttpError('Parâmetros inválidos', 400);
-        }
-    }
-    return;
-};
-
 const requestReferenceTable = async () => {
     const { data } = await axios.post('http://veiculos.fipe.org.br/api/veiculos/ConsultarTabelaDeReferencia');
 
@@ -184,6 +172,18 @@ const requestValueByFipe = async (fipeCode) => {
     }
 
     return response;
+};
+
+const verifyError = (data) => {
+    if (data.codigo) {
+        switch (data.codigo) {
+            case '0':
+                throw new HttpError('Veículo não encontrado', 404);
+            case '2':
+                throw new HttpError('Parâmetros inválidos', 400);
+        }
+    }
+    return;
 };
 
 const findBrandId = async (vehicleType, brand) => {
