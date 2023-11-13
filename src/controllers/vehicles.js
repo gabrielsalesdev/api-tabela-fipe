@@ -25,7 +25,7 @@ const getModels = (vehicleType) => async (req, res, next) => {
     }
 };
 
-const getModelYears = async (req, res, next) => {
+const getModelYears = (vehicleType) => async (req, res, next) => {
     try {
         const { vehicleType } = req;
         const { brandId, modelId } = req.params;
