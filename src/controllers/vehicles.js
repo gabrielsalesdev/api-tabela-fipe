@@ -1,6 +1,6 @@
 const { fipeApiServices } = require('../services/index');
 
-const getBrands = async (req, res, next) => {
+const getBrands = (vehicleType) => async (req, res, next) => {
     try {
         const { vehicleType } = req;
 
