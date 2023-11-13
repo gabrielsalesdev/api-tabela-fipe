@@ -3,7 +3,7 @@ const fipeRoutes = express();
 
 const { fipeControllers } = require('../controllers/index');
 
-router.get('/fipe/:fipeCode', fipeControllers.getVehicleValuesByFipe);
-router.get('/fipe/:fipeCode/:modelYearId', fipeControllers.getVehicleValueByFipeAndModelYear);
+fipeRoutes.get('/fipe/:fipeCode', fipeControllers.getVehicleValuesByFipe);
+fipeRoutes.get('/fipe/:fipeCode/:modelYearId', fipeControllers.getVehicleValueByFipeAndModelYear);
 
 module.exports = fipeRoutes;
