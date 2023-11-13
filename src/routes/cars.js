@@ -1,7 +1,7 @@
 const express = require('express');
 const carsRoutes = express();
 
-const vehicleControllers = require('../controllers/vehicles');
+const { vehiclesControllers } = require('../controllers/index');
 
 const { vehiclesMiddlewares } = require('../middlewares/index');
 
