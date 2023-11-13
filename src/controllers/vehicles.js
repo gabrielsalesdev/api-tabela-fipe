@@ -12,7 +12,6 @@ const getBrands = (vehicleType) => async (req, res, next) => {
 
 const getModels = (vehicleType) => async (req, res, next) => {
     try {
-        const { vehicleType } = req;
         const { brandId } = req.params;
 
         const response = await fipeApiServices.requestModels(vehicleType, brandId);
