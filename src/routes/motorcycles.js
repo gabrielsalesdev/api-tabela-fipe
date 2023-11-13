@@ -3,9 +3,9 @@ const motorcyclesRoutes = express();
 
 const { vehiclesControllers } = require('../controllers/index');
 
-motorcyclesRoutes.get('/motos', vehiclesControllers.getBrands);
-motorcyclesRoutes.get('/motos/:brandId', vehiclesControllers.getModels);
-motorcyclesRoutes.get('/motos/:brandId/:modelId', vehiclesControllers.getModelYears);
-motorcyclesRoutes.get('/motos/:brandId/:modelId/:modelYearId', vehiclesControllers.getValue);
+motorcyclesRoutes.get('/motos', vehiclesControllers.getBrands(2));
+motorcyclesRoutes.get('/motos/:brandId', vehiclesControllers.getModels(2));
+motorcyclesRoutes.get('/motos/:brandId/:modelId', vehiclesControllers.getModelYears(2));
+motorcyclesRoutes.get('/motos/:brandId/:modelId/:modelYearId', vehiclesControllers.getValue(2));
 
 module.exports = motorcyclesRoutes;
