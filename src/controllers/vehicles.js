@@ -36,7 +36,6 @@ const getModelYears = (vehicleType) => async (req, res, next) => {
 
 const getValue = (vehicleType) => async (req, res, next) => {
     try {
-        const { vehicleType } = req;
         const { brandId, modelId, modelYearId } = req.params;
 
         const response = await fipeApiServices.requestValue(vehicleType, brandId, modelId, modelYearId);
