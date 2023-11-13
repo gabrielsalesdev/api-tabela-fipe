@@ -1,13 +1,13 @@
 const express = require('express');
-const router = express();
+const vehiclesRoutes = express();
 
 const vehicleControllers = require('../controllers/vehicles');
 
 const { vehiclesMiddlewares } = require('../middlewares/index');
 
-router.get('/:vehicle', vehiclesMiddlewares.validateType, vehicleControllers.getBrands);
-router.get('/:vehicle/:brandId', vehiclesMiddlewares.validateType, vehicleControllers.getModels);
-router.get('/:vehicle/:brandId/:modelId', vehiclesMiddlewares.validateType, vehicleControllers.getModelYears);
-router.get('/:vehicle/:brandId/:modelId/:modelYearId', vehiclesMiddlewares.validateType, vehicleControllers.getValue);
+vehiclesRoutes.get('/:vehicle', vehiclesMiddlewares.validateType, vehicleControllers.getBrands);
+vehiclesRoutes.get('/:vehicle/:brandId', vehiclesMiddlewares.validateType, vehicleControllers.getModels);
+vehiclesRoutes.get('/:vehicle/:brandId/:modelId', vehiclesMiddlewares.validateType, vehicleControllers.getModelYears);
+vehiclesRoutes.get('/:vehicle/:brandId/:modelId/:modelYearId', vehiclesMiddlewares.validateType, vehicleControllers.getValue);
 
-module.exports = router;
+module.exports = vehiclesRoutes;
