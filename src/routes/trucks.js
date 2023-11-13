@@ -1,6 +1,6 @@
 const express = require('express');
-const motorcyclesRoutes = express();
+const trucksRoutes = express();
 
 const { vehiclesControllers } = require('../controllers/index');
 
-module.exports = motorcyclesRoutes;
+module.exports = trucksRoutes;
