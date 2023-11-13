@@ -2,8 +2,6 @@ const { fipeApiServices } = require('../services/index');
 
 const getBrands = (vehicleType) => async (req, res, next) => {
     try {
-        const { vehicleType } = req;
-
         const response = await fipeApiServices.requestBrands(vehicleType);
 
         return res.status(200).json(response);
