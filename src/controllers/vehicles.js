@@ -1,9 +1,7 @@
 const { fipeApiServices } = require('../services/index');
 
-const getBrands = async (req, res, next) => {
+const getBrands = (vehicleType) => async (req, res, next) => {
     try {
-        const { vehicleType } = req;
-
         const response = await fipeApiServices.requestBrands(vehicleType);
 
         return res.status(200).json(response);
@@ -12,9 +10,8 @@ const getBrands = async (req, res, next) => {
     }
 };
 
-const getModels = async (req, res, next) => {
+const getModels = (vehicleType) => async (req, res, next) => {
     try {
-        const { vehicleType } = req;
         const { brandId } = req.params;
 
         const response = await fipeApiServices.requestModels(vehicleType, brandId);
@@ -25,9 +22,8 @@ const getModels = async (req, res, next) => {
     }
 };
 
-const getModelYears = async (req, res, next) => {
+const getModelYears = (vehicleType) => async (req, res, next) => {
     try {
-        const { vehicleType } = req;
         const { brandId, modelId } = req.params;
 
         const response = await fipeApiServices.requestModelYears(vehicleType, brandId, modelId);
@@ -38,9 +34,8 @@ const getModelYears = async (req, res, next) => {
     }
 };
 
-const getValue = async (req, res, next) => {
+const getValue = (vehicleType) => async (req, res, next) => {
     try {
-        const { vehicleType } = req;
         const { brandId, modelId, modelYearId } = req.params;
 
         const response = await fipeApiServices.requestValue(vehicleType, brandId, modelId, modelYearId);

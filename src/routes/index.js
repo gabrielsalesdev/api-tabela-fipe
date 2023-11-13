@@ -1,4 +1,6 @@
 const fipeRoutes = require('./fipe');
-const vehiclesRoutes = require('./vehicles');
+const carsRoutes = require('./cars');
+const motorcyclesRoutes = require('./motorcycles');
+const trucksRoutes = require('./trucks');
 
-module.exports = { fipeRoutes, vehiclesRoutes };
+module.exports = { fipeRoutes, carsRoutes, motorcyclesRoutes, trucksRoutes };
