@@ -9,7 +9,7 @@ const { errorsMiddlewares } = require('./middlewares/index');
 const { fipeRoutes, carsRoutes, motorcyclesRoutes, trucksRoutes } = require('./routes/index');
 
 app.use(express.json());
-
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use(fipeRoutes, carsRoutes, motorcyclesRoutes, trucksRoutes);
 app.use(errorsMiddlewares.errorHandler);
 
