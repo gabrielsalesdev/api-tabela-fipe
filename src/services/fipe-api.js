@@ -1,12 +1,15 @@
 const axios = require('axios');
 const { HttpError } = require('../errors/index');
 
-const requestReferenceTable = async () => {
+const requestReferenceTables = async () => {
     const { data } = await axios.post('http://veiculos.fipe.org.br/api/veiculos/ConsultarTabelaDeReferencia');
 
-    const response = data[0].Codigo.toString();
+    const referenceTables = data.map(referenceTable => ({
+        id: referenceTable.Codigo,
+        month: referenceTable.Mes
+    }))
 
-    return response;
+    return referenceTables;
 };
 
 const requestBrands = async (vehicleType) => {
@@ -200,4 +203,4 @@ const findModelId = async (vehicleType, brandId, model) => {
     return modelId;
 };
 
-module.exports = { requestBrands, requestModels, requestModelYears, requestValue, requestValueByFipeAndModelYear, requestValuesByFipe };
+module.exports = { requestReferenceTables, requestBrands, requestModels, requestModelYears, requestValue, requestValueByFipeAndModelYear, requestValuesByFipe };
