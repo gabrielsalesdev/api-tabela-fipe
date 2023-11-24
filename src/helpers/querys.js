@@ -38,5 +38,24 @@ const insertReferenceTables = async () => {
     }
 };
 
+const insertBrands = async () => {
+    try {
+        const vehicles = await selectVehicles();
+
+        for (const vehicle of vehicles) {
+            const brands = await fipeApiServices.requestBrands(vehicle.id);
+
+            for (const brand of brands) {
+                await knex('brands').insert({
+                    id: brand.id,
+                    name: brand.name,
+                    vehicle_id: brand.vehicleId
+                }).onConflict('id').ignore();
+            }
+        }
+    } catch (error) {
+        console.error(error);
+    }
+};
 
 
