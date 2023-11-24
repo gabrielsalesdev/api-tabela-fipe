@@ -26,9 +26,9 @@ const requestBrands = async (vehicleType) => {
 
     const response = data.map(item => {
         return {
-            idMarca: item.Value,
-            nomeMarca: item.Label,
-            tipoVeiculo: vehicleType
+            id: item.Value,
+            name: item.Label,
+            vehicleId: vehicleType
         }
     });
 
