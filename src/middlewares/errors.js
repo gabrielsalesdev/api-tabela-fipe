@@ -1,4 +1,4 @@
-const { HttpError } = require('../errors/index');
+const HttpError = require('../errors/http');
 
 const errorHandler = (err, req, res, next) => {
     console.log(err.stack);
