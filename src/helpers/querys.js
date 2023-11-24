@@ -58,4 +58,4 @@ const insertBrands = async () => {
     }
 };
 
-
+module.exports = { selectLatestReferenceTableId, selectVehicles, insertReferenceTables, insertBrands };
