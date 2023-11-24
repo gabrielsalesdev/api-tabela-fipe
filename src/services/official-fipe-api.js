@@ -24,13 +24,11 @@ const requestBrands = async (vehicleId) => {
     const { data } = await axios.post('http://veiculos.fipe.org.br/api/veiculos/ConsultarMarcas', body);
     verifyError(data);
 
-    const response = data.map(item => {
-        return {
-            id: item.Value,
-            name: item.Label,
-            vehicleId
-        }
-    });
+    const response = data.map(item => ({
+        id: item.Value,
+        name: item.Label,
+        vehicleId
+    }))
 
     return response;
 };
