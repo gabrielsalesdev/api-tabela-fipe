@@ -6,11 +6,14 @@ const swaggerDocs = require('../swagger.json');
 
 const errorsMiddlewares = require('./middlewares/errors');
 
-const { fipeRoutes, carsRoutes, motorcyclesRoutes, trucksRoutes } = require('./routes/index');
+const carsRoutes = require('./routes/cars');
+const fipeRoutes = require('./routes/fipe');
+const motorcyclesRoutes = require('./routes/motorcycles');
+const trucksRoutes = require('./routes/trucks');
 
 app.use(express.json());
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-app.use(fipeRoutes, carsRoutes, motorcyclesRoutes, trucksRoutes);
+app.use(carsRoutes, fipeRoutes, motorcyclesRoutes, trucksRoutes);
 app.use(errorsMiddlewares.errorHandler);
 
 module.exports = app;
