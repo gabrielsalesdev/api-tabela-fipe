@@ -15,10 +15,10 @@ const requestReferenceTables = async () => {
     return referenceTables;
 };
 
-const requestBrands = async (vehicleType) => {
+const requestBrands = async (vehicleId) => {
     const body = {
         "codigoTabelaReferencia": await querysHelpers.selectLatestReferenceTableId(),
-        "codigoTipoVeiculo": vehicleType
+        "codigoTipoVeiculo": vehicleId
     };
 
     const { data } = await axios.post('http://veiculos.fipe.org.br/api/veiculos/ConsultarMarcas', body);
@@ -28,7 +28,7 @@ const requestBrands = async (vehicleType) => {
         return {
             id: item.Value,
             name: item.Label,
-            vehicleId: vehicleType
+            vehicleId
         }
     });
 
