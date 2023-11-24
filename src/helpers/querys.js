@@ -11,3 +11,14 @@ const selectLatestReferenceTableId = async () => {
         console.log(error);
     }
 };
+
+const selectVehicles = async () => {
+    try {
+        const vehicles = await knex('vehicles').select('*');
+
+        return vehicles;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
