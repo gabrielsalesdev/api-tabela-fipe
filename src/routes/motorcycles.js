@@ -1,7 +1,7 @@
 const express = require('express');
 const motorcyclesRoutes = express();
 
-const { vehiclesControllers } = require('../controllers/index');
+const vehiclesControllers = require('../controllers/vehicles');
 
 motorcyclesRoutes.get('/motos', vehiclesControllers.getBrands(2));
 motorcyclesRoutes.get('/motos/:brandId', vehiclesControllers.getModels(2));
