@@ -32,6 +32,16 @@ const selectBrands = async () => {
     }
 };
 
+const selectModels = async () => {
+    try {
+        const models = await knex('models').select('*');
+
+        return models
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 const insertReferenceTables = async () => {
     try {
         const referenceTables = await OfficialFipeApiServices.requestReferenceTables();
@@ -49,12 +59,12 @@ const insertReferenceTables = async () => {
 
 const insertBrands = async () => {
     try {
-        const referenceTable = await selectLatestReferenceTable();
+        const latestReferenceTable = await selectLatestReferenceTable();
 
         const vehicles = await selectVehicles();
 
         for (const vehicle of vehicles) {
-            const brands = await OfficialFipeApiServices.requestBrands(referenceTable.id, vehicle.id);
+            const brands = await OfficialFipeApiServices.requestBrands(latestReferenceTable.id, vehicle.id);
 
             for (const brand of brands) {
                 await knex('brands').insert({
@@ -71,12 +81,12 @@ const insertBrands = async () => {
 
 const insertModels = async () => {
     try {
-        const referenceTable = await selectLatestReferenceTable();
+        const latestReferenceTable = await selectLatestReferenceTable();
 
         const brands = await selectBrands();
 
         for (const brand of brands) {
-            const models = await OfficialFipeApiServices.requestModels(referenceTable.id, brand.vehicle_id, brand.id);
+            const models = await OfficialFipeApiServices.requestModels(latestReferenceTable.id, brand.vehicle_id, brand.id);
 
             for (const model of models) {
                 await knex('models').insert({
