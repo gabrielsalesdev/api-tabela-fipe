@@ -30,7 +30,7 @@ const selectBrands = async () => {
     } catch (error) {
         console.error(error);
     }
-}
+};
 
 const insertReferenceTables = async () => {
     try {
