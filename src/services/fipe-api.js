@@ -1,5 +1,8 @@
 const axios = require('axios');
+
 const { HttpError } = require('../errors/index');
+
+const querysHelpers = require('../helpers/querys');
 
 const requestReferenceTables = async () => {
     const { data } = await axios.post('http://veiculos.fipe.org.br/api/veiculos/ConsultarTabelaDeReferencia');
