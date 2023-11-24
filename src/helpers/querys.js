@@ -102,4 +102,28 @@ const insertModels = async () => {
     }
 };
 
-module.exports = { selectVehicles, insertReferenceTables, insertBrands, insertModels };
+const insertModelYears = async () => {
+    try {
+        const latestReferenceTable = await selectLatestReferenceTable();
+
+        const models = await selectModels();
+
+        for (const model of models) {
+            const modelYears = await OfficialFipeApiServices.requestModelYears(latestReferenceTable.id, model.vehicle_id, model.brand_id, model.id);
+
+            for (const modelYear of modelYears) {
+                await knex('model_years').insert({
+                    id: modelYear.id,
+                    name: modelYear.name,
+                    brand_id: modelYear.brandId,
+                    model_id: modelYear.modelId,
+                    vehicle_id: modelYear.vehicleId
+                }).onConflict('id').ignore();
+            }
+        }
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+module.exports = { selectVehicles, insertReferenceTables, insertBrands, insertModels, insertModelYears };
