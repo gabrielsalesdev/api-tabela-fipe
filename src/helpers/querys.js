@@ -12,6 +12,7 @@ const selectLatestReferenceTableId = async () => {
     }
 };
 
+
 const selectVehicles = async () => {
     try {
         const vehicles = await knex('vehicles').select('*');
@@ -21,4 +22,21 @@ const selectVehicles = async () => {
         console.log(error);
     }
 };
+
+const insertReferenceTables = async () => {
+    try {
+        const referenceTables = await fipeApiServices.requestReferenceTables();
+
+        for (const referenceTable of referenceTables) {
+            await knex('reference_tables').insert({
+                id: referenceTable.id,
+                month: referenceTable.month
+            }).onConflict('id').ignore();
+        }
+    } catch (error) {
+        console.error(error)
+    }
+};
+
+
 
