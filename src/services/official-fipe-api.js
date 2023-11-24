@@ -37,7 +37,7 @@ const requestBrands = async (vehicleType) => {
 
 const requestModels = async (vehicleType, brandId) => {
     const body = {
-        "codigoTabelaReferencia": await requestReferenceTable(),
+        "codigoTabelaReferencia": await querysHelpers.selectLatestReferenceTableId(),
         "codigoTipoVeiculo": vehicleType,
         "codigoMarca": brandId
     };
