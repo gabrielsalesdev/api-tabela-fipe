@@ -33,10 +33,10 @@ const requestBrands = async (vehicleId) => {
     return response;
 };
 
-const requestModels = async (vehicleType, brandId) => {
+const requestModels = async (vehicleId, brandId) => {
     const body = {
         "codigoTabelaReferencia": await querysHelpers.selectLatestReferenceTableId(),
-        "codigoTipoVeiculo": vehicleType,
+        "codigoTipoVeiculo": vehicleId,
         "codigoMarca": brandId
     };
 
@@ -48,7 +48,7 @@ const requestModels = async (vehicleType, brandId) => {
             id: item.Value.toString(),
             name: item.Label,
             brandId,
-            vehicleId: vehicleType
+            vehicleId
         }
     });
 
