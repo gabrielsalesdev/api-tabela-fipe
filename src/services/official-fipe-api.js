@@ -51,9 +51,9 @@ const requestModels = async (referenceTableId, vehicleId, brandId) => {
     return response;
 };
 
-const requestModelYears = async (vehicleType, brandId, modelId) => {
+const requestModelYears = async (referenceTableId, vehicleType, brandId, modelId) => {
     const body = {
-        "codigoTabelaReferencia": await requestReferenceTable(),
+        "codigoTabelaReferencia": referenceTableId,
         "codigoTipoVeiculo": vehicleType,
         "codigoMarca": brandId,
         "codigoModelo": modelId
