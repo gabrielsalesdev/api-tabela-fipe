@@ -12,7 +12,6 @@ const selectLatestReferenceTableId = async () => {
     }
 };
 
-
 const selectVehicles = async () => {
     try {
         const vehicles = await knex('vehicles').select('*');
@@ -22,6 +21,16 @@ const selectVehicles = async () => {
         console.log(error);
     }
 };
+
+const selectBrands = async () => {
+    try {
+        const brands = await knex('brands').select('*');
+
+        return brands;
+    } catch (error) {
+        console.error(error);
+    }
+}
 
 const insertReferenceTables = async () => {
     try {
@@ -58,4 +67,4 @@ const insertBrands = async () => {
     }
 };
 
-module.exports = { selectLatestReferenceTableId, selectVehicles, insertReferenceTables, insertBrands };
+module.exports = { selectLatestReferenceTableId, selectVehicles, insertReferenceTables, insertBrands, insertModels };
