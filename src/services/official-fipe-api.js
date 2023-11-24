@@ -2,8 +2,6 @@ const axios = require('axios');
 
 const HttpError = require('../errors/http');
 
-const querysHelpers = require('../helpers/querys');
-
 const requestReferenceTables = async () => {
     const { data } = await axios.post('http://veiculos.fipe.org.br/api/veiculos/ConsultarTabelaDeReferencia');
 
@@ -15,9 +13,9 @@ const requestReferenceTables = async () => {
     return referenceTables;
 };
 
-const requestBrands = async (vehicleId) => {
+const requestBrands = async (referenceTableId, vehicleId) => {
     const body = {
-        "codigoTabelaReferencia": await querysHelpers.selectLatestReferenceTableId(),
+        "codigoTabelaReferencia": referenceTableId,
         "codigoTipoVeiculo": vehicleId
     };
 
