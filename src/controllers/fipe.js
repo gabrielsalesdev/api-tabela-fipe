@@ -1,10 +1,10 @@
-const { fipeApiServices } = require('../services/index');
+const OfficialFipeApiServices = require('../services/official-fipe-api');
 
 const getVehicleValuesByFipe = async (req, res, next) => {
     try {
         const { fipeCode } = req.params;
 
-        const response = await fipeApiServices.requestValuesByFipe(fipeCode);
+        const response = await OfficialFipeApiServices.requestValuesByFipe(fipeCode);
 
         return res.json(response);
     } catch (error) {
@@ -16,7 +16,7 @@ const getVehicleValueByFipeAndModelYear = async (req, res, next) => {
     try {
         const { fipeCode, modelYearId } = req.params;
 
-        const response = await fipeApiServices.requestValueByFipeAndModelYear(fipeCode, modelYearId);
+        const response = await OfficialFipeApiServices.requestValueByFipeAndModelYear(fipeCode, modelYearId);
 
         return res.json(response);
     } catch (error) {
