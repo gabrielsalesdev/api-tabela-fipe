@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const { HttpError } = require('../errors/index');
+const HttpError = require('../errors/http');
 
 const querysHelpers = require('../helpers/querys');
 
