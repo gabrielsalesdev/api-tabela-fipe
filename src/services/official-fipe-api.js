@@ -43,14 +43,12 @@ const requestModels = async (vehicleId, brandId) => {
     const { data } = await axios.post('http://veiculos.fipe.org.br/api/veiculos/ConsultarModelos', body);
     verifyError(data);
 
-    const response = data.Modelos.map(item => {
-        return {
-            id: item.Value.toString(),
-            name: item.Label,
-            brandId,
-            vehicleId
-        }
-    });
+    const response = data.Modelos.map(item => ({
+        id: item.Value.toString(),
+        name: item.Label,
+        brandId,
+        vehicleId
+    }));
 
     return response;
 };
