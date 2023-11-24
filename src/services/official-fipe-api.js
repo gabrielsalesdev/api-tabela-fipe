@@ -51,10 +51,10 @@ const requestModels = async (referenceTableId, vehicleId, brandId) => {
     return response;
 };
 
-const requestModelYears = async (referenceTableId, vehicleType, brandId, modelId) => {
+const requestModelYears = async (referenceTableId, vehicleId, brandId, modelId) => {
     const body = {
         "codigoTabelaReferencia": referenceTableId,
-        "codigoTipoVeiculo": vehicleType,
+        "codigoTipoVeiculo": vehicleId,
         "codigoMarca": brandId,
         "codigoModelo": modelId
     };
@@ -68,7 +68,7 @@ const requestModelYears = async (referenceTableId, vehicleType, brandId, modelId
             idModelo: modelId,
             idAnoModelo: item.Value,
             nomeAnoModelo: item.Label,
-            tipoVeiculo: vehicleType
+            tipoVeiculo: vehicleId
         }
     });
 
