@@ -47,10 +47,10 @@ const requestModels = async (vehicleType, brandId) => {
 
     const response = data.Modelos.map(item => {
         return {
-            idMarca: brandId,
-            idModelo: item.Value.toString(),
-            nomeModelo: item.Label,
-            tipoVeiculo: vehicleType
+            id: item.Value.toString(),
+            name: item.Label,
+            brandId,
+            vehicleId: vehicleType
         }
     });
 
