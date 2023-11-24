@@ -31,9 +31,9 @@ const requestBrands = async (referenceTableId, vehicleId) => {
     return response;
 };
 
-const requestModels = async (vehicleId, brandId) => {
+const requestModels = async (referenceTableId, vehicleId, brandId) => {
     const body = {
-        "codigoTabelaReferencia": await querysHelpers.selectLatestReferenceTableId(),
+        "codigoTabelaReferencia": referenceTableId,
         "codigoTipoVeiculo": vehicleId,
         "codigoMarca": brandId
     };
@@ -42,7 +42,7 @@ const requestModels = async (vehicleId, brandId) => {
     verifyError(data);
 
     const response = data.Modelos.map(item => ({
-        id: item.Value.toString(),
+        id: item.Value,
         name: item.Label,
         brandId,
         vehicleId
