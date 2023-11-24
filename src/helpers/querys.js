@@ -2,11 +2,11 @@ const knex = require('../database/knex');
 
 const OfficialFipeApiServices = require('../services/official-fipe-api');
 
-const selectLatestReferenceTableId = async () => {
+const selectLatestReferenceTable = async () => {
     try {
         const latestReferenceTable = await knex('reference_tables').select('*').orderBy('id', 'desc').first();
 
-        return latestReferenceTable.id;
+        return latestReferenceTable;
     } catch (error) {
         console.log(error);
     }
@@ -49,10 +49,12 @@ const insertReferenceTables = async () => {
 
 const insertBrands = async () => {
     try {
+        const referenceTable = await selectLatestReferenceTable();
+
         const vehicles = await selectVehicles();
 
         for (const vehicle of vehicles) {
-            const brands = await OfficialFipeApiServices.requestBrands(vehicle.id);
+            const brands = await OfficialFipeApiServices.requestBrands(referenceTable.id, vehicle.id);
 
             for (const brand of brands) {
                 await knex('brands').insert({
@@ -67,4 +69,27 @@ const insertBrands = async () => {
     }
 };
 
-module.exports = { selectLatestReferenceTableId, selectVehicles, insertReferenceTables, insertBrands, insertModels };
+const insertModels = async () => {
+    try {
+        const referenceTable = await selectLatestReferenceTable();
+
+        const brands = await selectBrands();
+
+        for (const brand of brands) {
+            const models = await OfficialFipeApiServices.requestModels(referenceTable.id, brand.vehicle_id, brand.id);
+
+            for (const model of models) {
+                await knex('models').insert({
+                    id: model.id,
+                    name: model.name,
+                    brand_id: model.brandId,
+                    vehicle_id: model.vehicleId
+                }).onConflict('id').ignore();
+            }
+        }
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+module.exports = { selectVehicles, insertReferenceTables, insertBrands, insertModels };
