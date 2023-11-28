@@ -112,7 +112,6 @@ const insertModelYears = async () => {
         for (const model of models) {
             const modelYears = await OfficialFipeApiServices.requestModelYears(latestReferenceTable.id, model.vehicle_id, model.brand_id, model.id);
 
-
             for (const modelYear of modelYears) {
                 const modelYearExist = await knex('model_years').select('*').where({
                     name: modelYear.name,
