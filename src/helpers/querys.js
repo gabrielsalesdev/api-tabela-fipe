@@ -105,20 +105,35 @@ const insertModels = async () => {
 const insertModelYears = async () => {
     try {
         const latestReferenceTable = await selectLatestReferenceTable();
+        let id = 1;
 
         const models = await selectModels();
 
         for (const model of models) {
             const modelYears = await OfficialFipeApiServices.requestModelYears(latestReferenceTable.id, model.vehicle_id, model.brand_id, model.id);
 
+
             for (const modelYear of modelYears) {
-                await knex('model_years').insert({
-                    id: modelYear.id,
+                const modelYearExist = await knex('model_years').select('*').where({
                     name: modelYear.name,
+                    year: modelYear.year,
+                    fuel_id: modelYear.fuelId,
                     brand_id: modelYear.brandId,
                     model_id: modelYear.modelId,
                     vehicle_id: modelYear.vehicleId
-                }).onConflict('id').ignore();
+                });
+
+                if (modelYearExist.length === 0) {
+                    await knex('model_years').insert({
+                        id: id++,
+                        name: modelYear.name,
+                        year: modelYear.year,
+                        fuel_id: modelYear.fuelId,
+                        brand_id: modelYear.brandId,
+                        model_id: modelYear.modelId,
+                        vehicle_id: modelYear.vehicleId
+                    });
+                }
             }
         }
     } catch (error) {
