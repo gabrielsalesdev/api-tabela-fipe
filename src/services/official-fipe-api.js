@@ -63,8 +63,9 @@ const requestModelYears = async (referenceTableId, vehicleId, brandId, modelId) 
     verifyError(data);
 
     const response = data.map(item => ({
-        id: item.Value,
         name: item.Label,
+        year: Number(item.Value.split('-')[0]),
+        fuelId: Number(item.Value.split('-')[1]),
         brandId,
         modelId,
         vehicleId
