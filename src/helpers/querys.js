@@ -54,6 +54,19 @@ const selectAllModels = async () => {
     }
 };
 
+const selectModelsByBrandId = async (vehicleId, brandId) => {
+    try {
+        const models = await knex('models').select('*').where({
+            brand_id: brandId,
+            vehicle_id: vehicleId
+        });
+
+        return models
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 const insertReferenceTables = async () => {
     try {
         const referenceTables = await officialFipeApiServices.requestReferenceTables();
@@ -152,4 +165,4 @@ const insertModelYears = async () => {
     }
 };
 
-module.exports = { selectBrandsByVehicleId, insertReferenceTables, insertBrands, insertModels, insertModelYears };
+module.exports = { selectBrandsByVehicleId, selectModelsByBrandId, insertReferenceTables, insertBrands, insertModels, insertModelYears };
