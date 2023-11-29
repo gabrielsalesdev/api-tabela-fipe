@@ -22,7 +22,7 @@ const selectVehicles = async () => {
     }
 };
 
-const selectBrands = async () => {
+const selectAllBrands = async () => {
     try {
         const brands = await knex('brands').select('*');
 
@@ -83,7 +83,7 @@ const insertModels = async () => {
     try {
         const latestReferenceTable = await selectLatestReferenceTable();
 
-        const brands = await selectBrands();
+        const brands = await selectAllBrands();
 
         for (const brand of brands) {
             const models = await officialFipeApiServices.requestModels(latestReferenceTable.id, brand.vehicle_id, brand.id);
