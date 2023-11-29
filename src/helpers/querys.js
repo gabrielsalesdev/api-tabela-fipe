@@ -1,6 +1,6 @@
 const knex = require('../database/knex');
 
-const OfficialFipeApiServices = require('../services/official-fipe-api');
+const officialFipeApiServices = require('../services/official-fipe-api');
 
 const selectLatestReferenceTable = async () => {
     try {
@@ -44,7 +44,7 @@ const selectModels = async () => {
 
 const insertReferenceTables = async () => {
     try {
-        const referenceTables = await OfficialFipeApiServices.requestReferenceTables();
+        const referenceTables = await officialFipeApiServices.requestReferenceTables();
 
         for (const referenceTable of referenceTables) {
             await knex('reference_tables').insert({
@@ -64,7 +64,7 @@ const insertBrands = async () => {
         const vehicles = await selectVehicles();
 
         for (const vehicle of vehicles) {
-            const brands = await OfficialFipeApiServices.requestBrands(latestReferenceTable.id, vehicle.id);
+            const brands = await officialFipeApiServices.requestBrands(latestReferenceTable.id, vehicle.id);
 
             for (const brand of brands) {
                 await knex('brands').insert({
@@ -86,7 +86,7 @@ const insertModels = async () => {
         const brands = await selectBrands();
 
         for (const brand of brands) {
-            const models = await OfficialFipeApiServices.requestModels(latestReferenceTable.id, brand.vehicle_id, brand.id);
+            const models = await officialFipeApiServices.requestModels(latestReferenceTable.id, brand.vehicle_id, brand.id);
 
             for (const model of models) {
                 await knex('models').insert({
@@ -110,7 +110,7 @@ const insertModelYears = async () => {
         const models = await selectModels();
 
         for (const model of models) {
-            const modelYears = await OfficialFipeApiServices.requestModelYears(latestReferenceTable.id, model.vehicle_id, model.brand_id, model.id);
+            const modelYears = await officialFipeApiServices.requestModelYears(latestReferenceTable.id, model.vehicle_id, model.brand_id, model.id);
 
             for (const modelYear of modelYears) {
                 const modelYearExist = await knex('model_years').select('*').where({
