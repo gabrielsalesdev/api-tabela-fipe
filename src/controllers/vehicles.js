@@ -1,8 +1,9 @@
 const OfficialFipeApiServices = require('../services/official-fipe-api');
+const querysHelpers = require('../helpers/querys');
 
 const getBrands = (vehicleType) => async (req, res, next) => {
     try {
-        const response = await OfficialFipeApiServices.requestBrands(vehicleType);
+        const response = await querysHelpers.selectBrandById(vehicleType);
 
         return res.status(200).json(response);
     } catch (error) {
