@@ -32,6 +32,18 @@ const selectAllBrands = async () => {
     }
 };
 
+const selectBrandsByVehicleId = async (vehicleId) => {
+    try {
+        const brands = await knex('brands').select('*').where({
+            vehicle_id: vehicleId
+        });
+
+        return brands;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 const selectModels = async () => {
     try {
         const models = await knex('models').select('*');
@@ -140,4 +152,4 @@ const insertModelYears = async () => {
     }
 };
 
-module.exports = { selectVehicles, insertReferenceTables, insertBrands, insertModels, insertModelYears };
+module.exports = { selectBrandsByVehicleId, insertReferenceTables, insertBrands, insertModels, insertModelYears };
