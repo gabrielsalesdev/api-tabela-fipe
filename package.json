@@ -18,6 +18,7 @@
     "knex": "^3.0.1",
     "node-cron": "^3.0.3",
     "pg": "^8.11.3",
+    "retry": "^0.13.1",
     "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
