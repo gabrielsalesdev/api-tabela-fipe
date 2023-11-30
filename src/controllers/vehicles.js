@@ -15,7 +15,7 @@ const getModels = (vehicleType) => async (req, res, next) => {
     try {
         const { brandId } = req.params;
 
-        const response = await OfficialFipeApiServices.requestModels(vehicleType, brandId);
+        const response = await querysHelpers.selectModelsByBrandId(vehicleType, brandId);
 
         return res.status(200).json(response);
     } catch (error) {
