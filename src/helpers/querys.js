@@ -1,4 +1,5 @@
 const knex = require('../database/knex');
+const retry = require('retry');
 
 const officialFipeApiServices = require('../services/official-fipe-api');
 
@@ -106,22 +107,54 @@ const insertBrands = async () => {
 
 const insertModels = async () => {
     try {
-        const latestReferenceTable = await selectLatestReferenceTable();
+        const operation = retry.operation({
+            retries: 100,
+            factor: 2,
+            minTimeout: 10000,
+            maxTimeout: 600000,
+            randomize: true
+        });
 
-        const brands = await selectAllBrands();
+        return new Promise(async (resolve, reject) => {
+            operation.attempt(async currentAttempt => {
+                try {
+                    const latestReferenceTable = await selectLatestReferenceTable();
 
-        for (const brand of brands) {
-            const models = await officialFipeApiServices.requestModels(latestReferenceTable.id, brand.vehicle_id, brand.id);
+                    const lastSuccessPoint = await getLastSuccessPointModels();
 
-            for (const model of models) {
-                await knex('models').insert({
-                    id: model.id,
-                    name: model.name,
-                    brand_id: model.brandId,
-                    vehicle_id: model.vehicleId
-                }).onConflict('id').ignore();
-            }
-        }
+                    const brands = await selectAllBrands();
+
+                    for (let i = lastSuccessPoint; i < brands.length; i++) {
+                        const brand = brands[i];
+                        const models = await officialFipeApiServices.requestModels(latestReferenceTable.id, brand.vehicle_id, brand.id);
+
+                        for (const model of models) {
+                            const oi = await knex('models').insert({
+                                id: model.id,
+                                name: model.name,
+                                brand_id: model.brandId,
+                                vehicle_id: model.vehicleId
+                            }).onConflict('id').ignore().returning('*');
+
+                            console.log(oi);
+                        }
+                        console.log(i);
+                        await updateLastSuccessPointModels(i);
+                    }
+
+                    await updateLastSuccessPointModels(0);
+
+                    resolve('Operation completed successfully');
+                }
+                catch (error) {
+                    console.error(`Attempt: ${currentAttempt}, Error: ${error}`);
+
+                    if (operation.retry(error)) return;
+
+                    reject(operation.mainError());
+                }
+            });
+        });
     } catch (error) {
         console.error(error);
     }
@@ -160,6 +193,24 @@ const insertModelYears = async () => {
                 }
             }
         }
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const getLastSuccessPointModels = async () => {
+    try {
+        const result = await knex('models_progress').select('last_success_point').first();
+
+        return result.last_success_point;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const updateLastSuccessPointModels = async (lastSuccessPoint) => {
+    try {
+        await knex('models_progress').update({ last_success_point: lastSuccessPoint }).where({ id: 1 });
     } catch (error) {
         console.error(error);
     }
