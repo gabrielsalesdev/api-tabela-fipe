@@ -216,4 +216,5 @@ const updateLastSuccessPointModels = async (lastSuccessPoint) => {
     }
 };
 
-module.exports = { selectBrandsByVehicleId, selectModelsByBrandId, insertReferenceTables, insertBrands, insertModels, insertModelYears };
+// module.exports = { selectBrandsByVehicleId, selectModelsByBrandId, insertReferenceTables, insertBrands, insertModels, insertModelYears };
+export default { selectBrandsByVehicleId, selectModelsByBrandId, insertReferenceTables, insertBrands, insertModels, insertModelYears };
