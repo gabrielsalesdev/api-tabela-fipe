@@ -1,15 +1,7 @@
 import knex from '../databases/knex.database';
 
-export default class BrandsRepository {
-    public selectAll = async () => {
-        try {
-
-        } catch (error) {
-            throw error;
-        }
-    };
-
-    public selectByVehicleId = async (vehicleId: number) => {
+export default class ReferenceTablesRepository {
+    public selectLatest = async () => {
         try {
 
         } catch (error) {

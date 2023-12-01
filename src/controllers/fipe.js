@@ -1,7 +1,5 @@
 const OfficialFipeApiServices = require('../services/official-fipe-api');
 
-const { } = require('express');
-
 const getVehicleValuesByFipe = async (req, res, next) => {
     try {
         const { fipeCode } = req.params;

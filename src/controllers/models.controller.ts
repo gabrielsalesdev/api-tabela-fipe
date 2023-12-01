@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-export default class BrandsController {
+export default class ModelsController {
     public get = (vehicleId: number) => async (req: Request, res: Response, next: NextFunction) => {
         try {
             // Código

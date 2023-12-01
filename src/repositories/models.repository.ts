@@ -1,6 +1,6 @@
 import knex from '../databases/knex.database';
 
-export default class BrandsRepository {
+export default class ModelsRepository {
     public selectAll = async () => {
         try {
 
@@ -9,7 +9,7 @@ export default class BrandsRepository {
         }
     };
 
-    public selectByVehicleId = async (vehicleId: number) => {
+    public selectByBrandId = async (vehicleId: number, brandId: number) => {
         try {
 
         } catch (error) {
