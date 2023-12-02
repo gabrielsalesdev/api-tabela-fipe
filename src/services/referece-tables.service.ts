@@ -1,5 +1,4 @@
 import axios from 'axios';
-import HttpError from '../errors/http.error';
 import { ReferenceTable } from '../interfaces/reference-table.interface';
 import { ReferenceTableRequest } from '../interfaces/reference-table-request.interface';
 
