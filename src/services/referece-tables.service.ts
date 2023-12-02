@@ -13,12 +13,16 @@ export default class ReferenceTablesService {
     };
 
     public static get = async (): Promise<ReferenceTable[]> => {
-        const data: ReferenceTableRequest[] = await this.request();
+        try {
+            const data: ReferenceTableRequest[] = await this.request();
 
-        const referenceTables: ReferenceTable[] = data.map((referenceTable: ReferenceTableRequest) => ({
-            id: referenceTable.Codigo,
-            month: referenceTable.Mes
-        }));
-        return referenceTables;
+            const referenceTables: ReferenceTable[] = data.map((referenceTable: ReferenceTableRequest) => ({
+                id: referenceTable.Codigo,
+                month: referenceTable.Mes
+            }));
+            return referenceTables;
+        } catch (error) {
+            throw error;
+        }
     };
 };
