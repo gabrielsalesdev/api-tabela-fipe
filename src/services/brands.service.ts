@@ -2,10 +2,8 @@ import axios from 'axios';
 import { BrandRequest } from '../interfaces/brand-request.interface';
 import { BrandResponse } from '../interfaces/brand-response.interface';
 import { Brand } from '../interfaces/brand.interface';
-import ReferenceTablesHelper from '../helpers/reference-tables.helper';
+import referenceTablesHelper from '../helpers/reference-tables.helper';
 import errorsHelper from '../helpers/errors.helper';
-
-const referenceTablesHelper = new ReferenceTablesHelper();
 
 export default class BrandsService {
     vehicleId: number;
