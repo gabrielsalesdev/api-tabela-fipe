@@ -3,15 +3,9 @@ import BrandsService from "../services/brands.service";
 import { Brand } from "../interfaces/brand.interface";
 
 export default class BrandsController {
-    vehicleId: number;
-
-    constructor(vehicleId: number) {
-        this.vehicleId = vehicleId;
-    }
-
-    public get = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    public get = (vehicleId: number) => async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
-            const brandsService = new BrandsService(this.vehicleId);
+            const brandsService = new BrandsService(vehicleId);
 
             const brands: Brand[] = await brandsService.get();
 
