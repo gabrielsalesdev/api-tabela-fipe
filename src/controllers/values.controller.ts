@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import ValuesService from "../services/values.service";
 import { Value } from "../interfaces/value.interface";
 
-export default class ModelsController {
+export default class ValuesController {
     public getTradicional = (vehicleId: number) => async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const { brandId, modelId, modelYearId } = req.params;
