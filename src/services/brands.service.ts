@@ -23,7 +23,7 @@ export default class BrandsService {
             };
 
             const { data } = await axios.post('http://veiculos.fipe.org.br/api/veiculos/ConsultarMarcas', body);
-            errorsHelpers.verifyResponseErros(data);
+            errorsHelpers.verifyResponseErrors(data);
 
             const brandsRequest: BrandResponse[] = data;
             return brandsRequest;
