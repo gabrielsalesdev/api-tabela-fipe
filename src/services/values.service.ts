@@ -1,7 +1,7 @@
 import axios from "axios";
 import referenceTablesHelper from '../helpers/reference-tables.helper';
 import errorsHelper from '../helpers/errors.helper';
-import { ValueRequestTradicional } from "../interfaces/value-request.interface";
+import { ValueRequestTradicional } from "../interfaces/value-request-traditional.interface";
 import { ValueResponse } from "../interfaces/value-response.interface";
 import { Value } from "../interfaces/value.interface";
 
