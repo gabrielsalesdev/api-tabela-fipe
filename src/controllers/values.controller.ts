@@ -11,8 +11,6 @@ export default class ValuesController {
 
             const value: Value = await valueService.getTradicional(vehicleId.toString(), brandId, modelId, modelYearId);
 
-            console.log(value);
-
             res.status(200).json(value);
         } catch (error) {
             next(error);
