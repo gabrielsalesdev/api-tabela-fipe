@@ -6,10 +6,10 @@ import { ModelResponse } from '../interfaces/model-response.interface';
 import { Model } from '../interfaces/model.interface';
 
 export default class ModelsService {
-    vehicleId: number;
-    brandId: number;
+    vehicleId: string;
+    brandId: string;
 
-    constructor(vehicleId: number, brandId: number) {
+    constructor(vehicleId: string, brandId: string) {
         this.vehicleId = vehicleId;
         this.brandId = brandId;
     }
@@ -40,7 +40,7 @@ export default class ModelsService {
                 return {
                     idVeiculo: this.vehicleId,
                     idMarca: this.brandId,
-                    idModelo: model.Value,
+                    idModelo: model.Value.toString(),
                     nomeModelo: model.Label
                 }
             });

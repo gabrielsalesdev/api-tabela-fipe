@@ -1,6 +1,6 @@
 export interface Model {
-    idVeiculo: number,
-    idMarca: number,
-    idModelo: number,
+    idVeiculo: string,
+    idMarca: string,
+    idModelo: string,
     nomeModelo: string,
 };

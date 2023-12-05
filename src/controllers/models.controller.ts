@@ -7,7 +7,7 @@ export default class ModelsController {
         try {
             const { brandId } = req.params;
 
-            const modelsService = new ModelsService(vehicleId, Number(brandId));
+            const modelsService = new ModelsService(vehicleId.toString(), brandId);
 
             const models: Model[] = await modelsService.get();
 

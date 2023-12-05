@@ -1,5 +1,5 @@
 export interface ModelRequest {
-    codigoTabelaReferencia: number,
-    codigoTipoVeiculo: number,
-    codigoMarca: number
+    codigoTabelaReferencia: string,
+    codigoTipoVeiculo: string,
+    codigoMarca: string
 };
