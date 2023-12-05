@@ -1,6 +1,6 @@
 import HttpError from "../errors/http.error";
 
-const checkResponseErrors = (response: any) => {
+const checkResponseErrors = (response: any): void => {
     if (response.codigo) {
         switch (response.codigo) {
             case '0':
