@@ -7,7 +7,7 @@ export default class ModelYearsController {
         try {
             const { brandId, modelId } = req.params;
 
-            const modelYearsService = new ModelYearsService(vehicleId, Number(brandId), Number(modelId));
+            const modelYearsService = new ModelYearsService(vehicleId.toString(), brandId, modelId);
 
             const modelYears: ModelYear[] = await modelYearsService.get();
 

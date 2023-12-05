@@ -6,11 +6,11 @@ import { ModelYearResponse } from "../interfaces/model-year-response.interface";
 import { ModelYear } from "../interfaces/model-year.interface";
 
 export default class ModelYearsService {
-    vehicleId: number;
-    brandId: number;
-    modelId: number;
+    vehicleId: string;
+    brandId: string;
+    modelId: string;
 
-    constructor(vehicleId: number, brandId: number, modelId: number) {
+    constructor(vehicleId: string, brandId: string, modelId: string) {
         this.vehicleId = vehicleId;
         this.brandId = brandId;
         this.modelId = modelId;

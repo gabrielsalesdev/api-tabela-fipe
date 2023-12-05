@@ -1,7 +1,7 @@
 export interface ModelYear {
-    idVeiculo: number,
-    idMarca: number,
-    idModelo: number,
+    idVeiculo: string,
+    idMarca: string,
+    idModelo: string,
     idAnoModelo: string,
     nomeAnoModelo: string,
 };
