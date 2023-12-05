@@ -1,4 +1,4 @@
 export interface BrandRequest {
-    codigoTabelaReferencia: number,
-    codigoTipoVeiculo: number
+    codigoTabelaReferencia: string,
+    codigoTipoVeiculo: string
 };

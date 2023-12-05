@@ -5,7 +5,7 @@ import { Brand } from "../interfaces/brand.interface";
 export default class BrandsController {
     public get = (vehicleId: number) => async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
-            const brandsService = new BrandsService(vehicleId);
+            const brandsService = new BrandsService(vehicleId.toString());
 
             const brands: Brand[] = await brandsService.get();
 

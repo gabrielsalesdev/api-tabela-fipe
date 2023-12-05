@@ -6,9 +6,9 @@ import { BrandResponse } from '../interfaces/brand-response.interface';
 import { Brand } from '../interfaces/brand.interface';
 
 export default class BrandsService {
-    vehicleId: number;
+    vehicleId: string;
 
-    constructor(vehicleId: number) {
+    constructor(vehicleId: string) {
         this.vehicleId = vehicleId;
     };
 
@@ -36,7 +36,7 @@ export default class BrandsService {
             const brands: Brand[] = brandsRequest.map(brand => {
                 return {
                     idVeiculo: this.vehicleId,
-                    idMarca: Number(brand.Value),
+                    idMarca: brand.Value,
                     nomeMarca: brand.Label
                 }
             });

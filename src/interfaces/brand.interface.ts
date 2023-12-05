@@ -1,5 +1,5 @@
 export interface Brand {
-    idVeiculo: number,
-    idMarca: number,
+    idVeiculo: string,
+    idMarca: string,
     nomeMarca: string
 };
