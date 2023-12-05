@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npm install",
     "start": "node ./src/server.js",
-    "dev": "nodemon ./src/server.js"
+    "dev": "nodemon"
   },
   "keywords": [],
   "author": "Gabriel Sales Dantas Santos",
