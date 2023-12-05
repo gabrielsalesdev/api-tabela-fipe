@@ -1,9 +1,9 @@
 import axios from 'axios';
+import referenceTablesHelper from '../helpers/reference-tables.helper';
+import errorsHelper from '../helpers/errors.helper';
 import { BrandRequest } from '../interfaces/brand-request.interface';
 import { BrandResponse } from '../interfaces/brand-response.interface';
 import { Brand } from '../interfaces/brand.interface';
-import referenceTablesHelper from '../helpers/reference-tables.helper';
-import errorsHelper from '../helpers/errors.helper';
 
 export default class BrandsService {
     vehicleId: number;
@@ -22,8 +22,8 @@ export default class BrandsService {
             const { data } = await axios.post('http://veiculos.fipe.org.br/api/veiculos/ConsultarMarcas', body);
             errorsHelper.checkResponseErrors(data);
 
-            const brandsRequest: BrandResponse[] = data;
-            return brandsRequest;
+            const brandsResponse: BrandResponse[] = data;
+            return brandsResponse;
         } catch (error) {
             throw error;
         }
