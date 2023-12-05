@@ -1,7 +1,7 @@
 import HttpError from "../errors/http.error";
 
 export default class ErrorsHelpers {
-    public verifyResponseErros = (response: any) => {
+    public verifyResponseErrors = (response: any) => {
         if (response.codigo) {
             switch (response.codigo) {
                 case '0':
