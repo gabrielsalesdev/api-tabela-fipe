@@ -22,7 +22,6 @@ export default class ValuesService {
             const { data } = await axios.post('http://veiculos.fipe.org.br/api/veiculos/ConsultarValorComTodosParametros', body);
             errorsHelper.checkResponseErrors(data);
 
-            console.log(data);
             const valueResponse: ValueResponse = data;
             return valueResponse;
         } catch (error) {
