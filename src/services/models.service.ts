@@ -25,7 +25,6 @@ export default class ModelsService {
             const { data } = await axios.post('http://veiculos.fipe.org.br/api/veiculos/ConsultarModelos', body);
             errorsHelper.checkResponseErrors(data);
 
-            console.log(data);
             const modelsResponse: ModelResponse = data;
             return modelsResponse;
         } catch (error) {
@@ -51,6 +50,3 @@ export default class ModelsService {
         }
     };
 };
-
-const models = new ModelsService(1, 1);
-models.get().then(i => console.log(i));
