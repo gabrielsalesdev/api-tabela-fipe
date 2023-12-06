@@ -45,4 +45,20 @@ export default class BrandsService {
             throw error;
         }
     };
+
+    public findId = async (brand: string): Promise<string> => {
+        try {
+            const brands: Brand[] = await this.get();
+            const brandFound: Brand | undefined = brands.find(i => i.nomeMarca === brand);
+
+            if (brandFound) {
+                const brandId: string = brandFound.idMarca;
+                return brandId;
+            }
+
+            throw new Error('Brand Id not found');
+        } catch (error) {
+            throw error;
+        }
+    };
 };
