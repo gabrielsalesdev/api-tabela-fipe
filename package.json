@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npm install",
     "start": "node ./src/server.js",
-    "dev": "nodemon ./src/server.js"
+    "dev": "nodemon"
   },
   "keywords": [],
   "author": "Gabriel Sales Dantas Santos",
@@ -17,6 +17,9 @@
     "express": "^4.18.2"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "@types/express": "^4.17.21",
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.3.2"
   }
 }
