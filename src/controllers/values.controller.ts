@@ -16,4 +16,18 @@ export default class ValuesController {
             next(error);
         }
     };
+
+    public getByFipeAndModelYear = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+        try {
+            const { fipeCode, modelYearId } = req.params;
+
+            const valueService = new ValuesService();
+
+            const value: Value = await valueService.getByFipeAndModelYear(fipeCode, modelYearId);
+
+            res.status(200).json(value);
+        } catch (error) {
+            next(error);
+        }
+    };
 };
