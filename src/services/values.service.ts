@@ -7,6 +7,8 @@ import { ValueRequestTradicional } from "../interfaces/value-request-traditional
 import { ValueResponse } from "../interfaces/value-response.interface";
 import { Value } from "../interfaces/value.interface";
 import { ValueRequestByFipe } from "../interfaces/value-request-by-fipe.interface";
+import { ModelYearRequestByFipe } from "../interfaces/model-year-request-by-fipe.interface";
+import { ModelYearResponse } from "../interfaces/model-year-response.interface";
 
 export default class ValuesService {
     private requestTradicional = async (vehicleId: string, brandId: string, modelId: string, modelYearId: string): Promise<ValueResponse> => {
@@ -49,6 +51,55 @@ export default class ValuesService {
                 codigoFipe: valueResquest.CodigoFipe,
             };
             return value;
+        } catch (error) {
+            throw error;
+        }
+    };
+
+    private requestByFipe = async (fipeCode: string): Promise<string[]> => {
+        try {
+            let modelYearsIds: string[] = [];
+            let code: string = '0';
+
+            for (let i = 1; i <= 3; i++) {
+                const body: ModelYearRequestByFipe = {
+                    codigoTabelaReferencia: await referenceTablesHelper.getLatest(),
+                    codigoTipoVeiculo: i.toString(),
+                    modeloCodigoExterno: fipeCode
+                };
+
+                const { data } = await axios.post('https://veiculos.fipe.org.br/api/veiculos/ConsultarAnoModeloPeloCodigoFipe', body);
+
+                if (data.codigo && data.codigo === '2') code = '2';
+
+                if (Array.isArray(data)) {
+                    const modelYearsResponse: ModelYearResponse[] = data;
+
+                    for (const modelYear of modelYearsResponse) {
+                        modelYearsIds.push(modelYear.Value);
+                    }
+                }
+            }
+
+            if (modelYearsIds.length === 0) errorsHelper.checkResponseErrors({ codigo: code });
+
+            return modelYearsIds;
+        } catch (error) {
+            throw error;
+        }
+    };
+
+    public getByFipe = async (fipeCode: string): Promise<Value[]> => {
+        try {
+            const modelYearsIds: string[] = await this.requestByFipe(fipeCode);
+
+            let values: Value[] = [];
+
+            for (const modelYearId of modelYearsIds) {
+                values.push(await this.getByFipeAndModelYear(fipeCode, modelYearId));
+            }
+
+            return values;
         } catch (error) {
             throw error;
         }
