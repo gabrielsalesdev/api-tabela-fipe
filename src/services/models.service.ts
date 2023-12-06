@@ -49,4 +49,20 @@ export default class ModelsService {
             throw error;
         }
     };
+
+    public findId = async (model: string): Promise<string> => {
+        try {
+            const models: Model[] = await this.get();
+            const modelFound: Model | undefined = models.find(i => i.nomeModelo === model);
+
+            if (modelFound) {
+                const modelId: string = modelFound.idModelo;
+                return modelId;
+            }
+
+            throw new Error('Model Id not found');
+        } catch (error) {
+            throw error;
+        }
+    }
 };
