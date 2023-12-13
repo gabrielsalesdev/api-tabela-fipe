@@ -1,6 +1,6 @@
 import axios from "axios";
-import referenceTablesHelper from "../helpers/reference-tables.helper";
 import errorsHelper from '../helpers/errors.helper';
+import RefereceTablesService from "./reference-tables.service";
 import { ModelYearRequest } from "../interfaces/model-year-request.interface";
 import { ModelYearResponse } from "../interfaces/model-year-response.interface";
 import { ModelYear } from "../interfaces/model-year.interface";
@@ -18,8 +18,10 @@ export default class ModelYearsService {
 
     private request = async (): Promise<ModelYearResponse[]> => {
         try {
+            const refereceTablesService = new RefereceTablesService();
+
             const body: ModelYearRequest = {
-                codigoTabelaReferencia: await referenceTablesHelper.getLatest(),
+                codigoTabelaReferencia: await refereceTablesService.getLatest(),
                 codigoTipoVeiculo: this.vehicleId,
                 codigoMarca: this.brandId,
                 codigoModelo: this.modelId
@@ -37,9 +39,9 @@ export default class ModelYearsService {
 
     public get = async (): Promise<ModelYear[]> => {
         try {
-            const modelYearsRequest: ModelYearResponse[] = await this.request();
+            const modelYearsResponse: ModelYearResponse[] = await this.request();
 
-            const modelYears: ModelYear[] = modelYearsRequest.map(modelYear => {
+            const modelYears: ModelYear[] = modelYearsResponse.map(modelYear => {
                 return {
                     idVeiculo: this.vehicleId,
                     idMarca: this.brandId,
