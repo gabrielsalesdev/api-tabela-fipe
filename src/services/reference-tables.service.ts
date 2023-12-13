@@ -1,8 +1,10 @@
 import axios from 'axios';
 import NodeCache from 'node-cache';
+import dotenvConfig from '../config/dotenv.config';
 import { ReferenceTableResponse } from '../interfaces/reference-table-response.interface';
 
-const referenceTableCache = new NodeCache();
+const referenceTablesCache = new NodeCache();
+const cacheKey: string = dotenvConfig.cache.key as string;
 
 export default class RefereceTablesService {
     private request = async (): Promise<ReferenceTableResponse[]> => {
@@ -18,7 +20,7 @@ export default class RefereceTablesService {
 
     public getLatest = async (): Promise<string> => {
         try {
-            const referenceTableCached = referenceTableCache.get('123');
+            const referenceTableCached = referenceTablesCache.get(cacheKey);
 
             if (referenceTableCached !== undefined && referenceTableCached !== null) {
                 const latestReferenceTable: number = referenceTableCached as number;
@@ -28,7 +30,7 @@ export default class RefereceTablesService {
             const referenceTablesResponse: ReferenceTableResponse[] = await this.request();
             const latestReferenceTable: number = referenceTablesResponse[0].Codigo;
 
-            referenceTableCache.set('123', latestReferenceTable, 1800);
+            referenceTablesCache.set(cacheKey, latestReferenceTable, 86400);
 
             return latestReferenceTable.toString();
         } catch (error) {
