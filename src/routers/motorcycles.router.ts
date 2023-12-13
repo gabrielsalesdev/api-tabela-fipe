@@ -13,6 +13,6 @@ const valuesController = new ValuesController();
 motorcyclesRouter.get('/motos', brandsController.get(2));
 motorcyclesRouter.get('/motos/:brandId', modelsController.get(2));
 motorcyclesRouter.get('/motos/:brandId/:modelId', modelYearsController.get(2));
-motorcyclesRouter.get('/motos/:brandId/:modelId/:modelYearId', valuesController.getTradicional(2));
+motorcyclesRouter.get('/motos/:brandId/:modelId/:modelYearId', valuesController.getTraditional(2));
 
 export default motorcyclesRouter;
