@@ -1,6 +1,6 @@
 import axios from 'axios';
-import referenceTablesHelper from '../helpers/reference-tables.helper';
 import errorsHelper from '../helpers/errors.helper';
+import RefereceTablesService from './reference-tables.service';
 import { BrandRequest } from '../interfaces/brand-request.interface';
 import { BrandResponse } from '../interfaces/brand-response.interface';
 import { Brand } from '../interfaces/brand.interface';
@@ -14,8 +14,10 @@ export default class BrandsService {
 
     private request = async (): Promise<BrandResponse[]> => {
         try {
+            const refereceTablesService = new RefereceTablesService();
+
             const body: BrandRequest = {
-                codigoTabelaReferencia: await referenceTablesHelper.getLatest(),
+                codigoTabelaReferencia: await refereceTablesService.getLatest(),
                 codigoTipoVeiculo: this.vehicleId
             };
 
@@ -31,9 +33,9 @@ export default class BrandsService {
 
     public get = async (): Promise<Brand[]> => {
         try {
-            const brandsRequest: BrandResponse[] = await this.request();
+            const brandsResponse: BrandResponse[] = await this.request();
 
-            const brands: Brand[] = brandsRequest.map(brand => {
+            const brands: Brand[] = brandsResponse.map(brand => {
                 return {
                     idVeiculo: this.vehicleId,
                     idMarca: brand.Value,
