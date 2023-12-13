@@ -1,9 +1,14 @@
 import axios from 'axios';
+import NodeCache from 'node-cache';
 import errorsHelper from '../helpers/errors.helper';
+import dotenvConfig from '../config/dotenv.config';
 import RefereceTablesService from './reference-tables.service';
 import { ModelRequest } from "../interfaces/model-request.interface";
 import { ModelResponse } from '../interfaces/model-response.interface';
 import { Model } from '../interfaces/model.interface';
+
+const modelsCache = new NodeCache();
+const cacheKey: string = dotenvConfig.cache.key as string;
 
 export default class ModelsService {
     vehicleId: string;
@@ -36,6 +41,14 @@ export default class ModelsService {
 
     public get = async (): Promise<Model[]> => {
         try {
+            const modelsCached = modelsCache.get(cacheKey);
+
+            if (modelsCached !== undefined && modelsCached !== null) {
+                const models: Model[] = modelsCached as Model[];
+                console.log('entrou no cache');
+                if (models[0].idVeiculo === this.vehicleId && models[0].idMarca === this.brandId) return models;
+            }
+
             const modelsResponse: ModelResponse = await this.request();
 
             const models: Model[] = modelsResponse.Modelos.map(model => {
@@ -46,6 +59,9 @@ export default class ModelsService {
                     nomeModelo: model.Label
                 }
             });
+
+            modelsCache.set(cacheKey, models, 86400);
+
             return models;
         } catch (error) {
             throw error;
