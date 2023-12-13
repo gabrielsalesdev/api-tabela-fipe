@@ -1,6 +1,6 @@
 import axios from 'axios';
-import referenceTablesHelper from "../helpers/reference-tables.helper";
 import errorsHelper from '../helpers/errors.helper';
+import RefereceTablesService from './reference-tables.service';
 import { ModelRequest } from "../interfaces/model-request.interface";
 import { ModelResponse } from '../interfaces/model-response.interface';
 import { Model } from '../interfaces/model.interface';
@@ -16,8 +16,10 @@ export default class ModelsService {
 
     private request = async (): Promise<ModelResponse> => {
         try {
+            const refereceTablesService = new RefereceTablesService();
+
             const body: ModelRequest = {
-                codigoTabelaReferencia: await referenceTablesHelper.getLatest(),
+                codigoTabelaReferencia: await refereceTablesService.getLatest(),
                 codigoTipoVeiculo: this.vehicleId,
                 codigoMarca: this.brandId
             };
@@ -34,9 +36,9 @@ export default class ModelsService {
 
     public get = async (): Promise<Model[]> => {
         try {
-            const modelsRequest: ModelResponse = await this.request();
+            const modelsResponse: ModelResponse = await this.request();
 
-            const models: Model[] = modelsRequest.Modelos.map(model => {
+            const models: Model[] = modelsResponse.Modelos.map(model => {
                 return {
                     idVeiculo: this.vehicleId,
                     idMarca: this.brandId,
