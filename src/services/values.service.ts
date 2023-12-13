@@ -1,6 +1,6 @@
 import axios from "axios";
-import referenceTablesHelper from '../helpers/reference-tables.helper';
 import errorsHelper from '../helpers/errors.helper';
+import RefereceTablesService from "./reference-tables.service";
 import BrandsService from "./brands.service";
 import ModelsService from "./models.service";
 import { ValueRequestTradicional } from "../interfaces/value-request-traditional.interface";
@@ -13,8 +13,10 @@ import { ModelYearResponse } from "../interfaces/model-year-response.interface";
 export default class ValuesService {
     private requestTradicional = async (vehicleId: string, brandId: string, modelId: string, modelYearId: string): Promise<ValueResponse> => {
         try {
+            const refereceTablesService = new RefereceTablesService();
+
             const body: ValueRequestTradicional = {
-                codigoTabelaReferencia: await referenceTablesHelper.getLatest(),
+                codigoTabelaReferencia: await refereceTablesService.getLatest(),
                 codigoTipoVeiculo: vehicleId,
                 codigoMarca: brandId,
                 codigoModelo: modelId,
@@ -36,19 +38,19 @@ export default class ValuesService {
 
     public getTradicional = async (vehicleId: string, brandId: string, modelId: string, modelYearId: string): Promise<Value> => {
         try {
-            const valueResquest: ValueResponse = await this.requestTradicional(vehicleId, brandId, modelId, modelYearId);
+            const valueResponse: ValueResponse = await this.requestTradicional(vehicleId, brandId, modelId, modelYearId);
 
             const value: Value = {
                 idVeiculo: vehicleId,
                 idMarca: brandId,
-                nomeMarca: valueResquest.Marca,
+                nomeMarca: valueResponse.Marca,
                 idModelo: modelId,
-                nomeModelo: valueResquest.Modelo,
+                nomeModelo: valueResponse.Modelo,
                 idAnoModelo: modelYearId,
-                ano: valueResquest.AnoModelo.toString(),
-                combustivel: valueResquest.Combustivel,
-                preco: valueResquest.Valor,
-                codigoFipe: valueResquest.CodigoFipe,
+                ano: valueResponse.AnoModelo.toString(),
+                combustivel: valueResponse.Combustivel,
+                preco: valueResponse.Valor,
+                codigoFipe: valueResponse.CodigoFipe,
             };
             return value;
         } catch (error) {
@@ -62,8 +64,10 @@ export default class ValuesService {
             let code: string = '0';
 
             for (let i = 1; i <= 3; i++) {
+                const refereceTablesService = new RefereceTablesService();
+
                 const body: ModelYearRequestByFipe = {
-                    codigoTabelaReferencia: await referenceTablesHelper.getLatest(),
+                    codigoTabelaReferencia: await refereceTablesService.getLatest(),
                     codigoTipoVeiculo: i.toString(),
                     modeloCodigoExterno: fipeCode
                 };
@@ -113,8 +117,10 @@ export default class ValuesService {
             let code: string = '0';
 
             for (let i = 1; i <= 3; i++) {
+                const refereceTablesService = new RefereceTablesService();
+
                 const body: ValueRequestByFipe = {
-                    codigoTabelaReferencia: await referenceTablesHelper.getLatest(),
+                    codigoTabelaReferencia: await refereceTablesService.getLatest(),
                     codigoTipoVeiculo: i.toString(),
                     anoModelo: modelYearId.split('-')[0],
                     modeloCodigoExterno: fipeCode,
