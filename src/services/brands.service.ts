@@ -1,9 +1,14 @@
 import axios from 'axios';
+import NodeCache from 'node-cache';
 import errorsHelper from '../helpers/errors.helper';
+import dotenvConfig from '../config/dotenv.config';
 import RefereceTablesService from './reference-tables.service';
 import { BrandRequest } from '../interfaces/brand-request.interface';
 import { BrandResponse } from '../interfaces/brand-response.interface';
 import { Brand } from '../interfaces/brand.interface';
+
+const brandsCache = new NodeCache();
+const cacheKey: string = dotenvConfig.cache.key as string;
 
 export default class BrandsService {
     vehicleId: string;
@@ -33,6 +38,13 @@ export default class BrandsService {
 
     public get = async (): Promise<Brand[]> => {
         try {
+            const brandsCached = brandsCache.get(cacheKey);
+
+            if (brandsCached !== undefined && brandsCached !== null) {
+                const brands: Brand[] = brandsCached as Brand[];
+                if (brands[0].idVeiculo === this.vehicleId) return brands;
+            }
+
             const brandsResponse: BrandResponse[] = await this.request();
 
             const brands: Brand[] = brandsResponse.map(brand => {
@@ -42,6 +54,9 @@ export default class BrandsService {
                     nomeMarca: brand.Label
                 }
             });
+
+            brandsCache.set(cacheKey, brands, 86400);
+
             return brands;
         } catch (error) {
             throw error;
