@@ -13,6 +13,6 @@ const valuesController = new ValuesController();
 carsRouter.get('/carros', brandsController.get(1));
 carsRouter.get('/carros/:brandId', modelsController.get(1));
 carsRouter.get('/carros/:brandId/:modelId', modelYearsController.get(1));
-carsRouter.get('/carros/:brandId/:modelId/:modelYearId', valuesController.getTradicional(1));
+carsRouter.get('/carros/:brandId/:modelId/:modelYearId', valuesController.getTraditional(1));
 
 export default carsRouter;

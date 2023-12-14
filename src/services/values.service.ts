@@ -1,6 +1,8 @@
 import axios from "axios";
-import referenceTablesHelper from '../helpers/reference-tables.helper';
+import NodeCache from 'node-cache';
 import errorsHelper from '../helpers/errors.helper';
+import dotenvConfig from '../config/dotenv.config';
+import RefereceTablesService from "./reference-tables.service";
 import BrandsService from "./brands.service";
 import ModelsService from "./models.service";
 import { ValueRequestTradicional } from "../interfaces/value-request-traditional.interface";
@@ -10,11 +12,18 @@ import { ValueRequestByFipe } from "../interfaces/value-request-by-fipe.interfac
 import { ModelYearRequestByFipe } from "../interfaces/model-year-request-by-fipe.interface";
 import { ModelYearResponse } from "../interfaces/model-year-response.interface";
 
+const valuesTraditionalCache = new NodeCache();
+const valuesByFipeCache = new NodeCache();
+const valuesByFipeAndModelYearCache = new NodeCache();
+const cacheKey: string = dotenvConfig.cache.key as string;
+
 export default class ValuesService {
-    private requestTradicional = async (vehicleId: string, brandId: string, modelId: string, modelYearId: string): Promise<ValueResponse> => {
+    private requestTraditional = async (vehicleId: string, brandId: string, modelId: string, modelYearId: string): Promise<ValueResponse> => {
         try {
+            const refereceTablesService = new RefereceTablesService();
+
             const body: ValueRequestTradicional = {
-                codigoTabelaReferencia: await referenceTablesHelper.getLatest(),
+                codigoTabelaReferencia: await refereceTablesService.getLatest(),
                 codigoTipoVeiculo: vehicleId,
                 codigoMarca: brandId,
                 codigoModelo: modelId,
@@ -34,22 +43,32 @@ export default class ValuesService {
         }
     };
 
-    public getTradicional = async (vehicleId: string, brandId: string, modelId: string, modelYearId: string): Promise<Value> => {
+    public getTraditional = async (vehicleId: string, brandId: string, modelId: string, modelYearId: string): Promise<Value> => {
         try {
-            const valueResquest: ValueResponse = await this.requestTradicional(vehicleId, brandId, modelId, modelYearId);
+            const valueCached = valuesTraditionalCache.get(cacheKey);
+
+            if (valueCached !== undefined && valueCached !== null) {
+                const value: Value = valueCached as Value;
+                if (value.idVeiculo === vehicleId && value.idMarca === brandId && value.idModelo === modelId && value.idAnoModelo === modelYearId) return value;
+            }
+
+            const valueResponse: ValueResponse = await this.requestTraditional(vehicleId, brandId, modelId, modelYearId);
 
             const value: Value = {
                 idVeiculo: vehicleId,
                 idMarca: brandId,
-                nomeMarca: valueResquest.Marca,
+                nomeMarca: valueResponse.Marca,
                 idModelo: modelId,
-                nomeModelo: valueResquest.Modelo,
+                nomeModelo: valueResponse.Modelo,
                 idAnoModelo: modelYearId,
-                ano: valueResquest.AnoModelo.toString(),
-                combustivel: valueResquest.Combustivel,
-                preco: valueResquest.Valor,
-                codigoFipe: valueResquest.CodigoFipe,
+                ano: valueResponse.AnoModelo.toString(),
+                combustivel: valueResponse.Combustivel,
+                preco: valueResponse.Valor,
+                codigoFipe: valueResponse.CodigoFipe,
             };
+
+            valuesTraditionalCache.set(cacheKey, value, 86400);
+
             return value;
         } catch (error) {
             throw error;
@@ -62,8 +81,10 @@ export default class ValuesService {
             let code: string = '0';
 
             for (let i = 1; i <= 3; i++) {
+                const refereceTablesService = new RefereceTablesService();
+
                 const body: ModelYearRequestByFipe = {
-                    codigoTabelaReferencia: await referenceTablesHelper.getLatest(),
+                    codigoTabelaReferencia: await refereceTablesService.getLatest(),
                     codigoTipoVeiculo: i.toString(),
                     modeloCodigoExterno: fipeCode
                 };
@@ -91,13 +112,22 @@ export default class ValuesService {
 
     public getByFipe = async (fipeCode: string): Promise<Value[]> => {
         try {
+            const valuesCached = valuesByFipeCache.get(cacheKey);
+
+            if (valuesCached !== undefined && valuesCached !== null) {
+                const values: Value[] = valuesCached as Value[];
+                if (values[0].codigoFipe === fipeCode) return values;
+            }
+
             const modelYearsIds: string[] = await this.requestByFipe(fipeCode);
 
-            let values: Value[] = [];
+            const values: Value[] = [];
 
             for (const modelYearId of modelYearsIds) {
                 values.push(await this.getByFipeAndModelYear(fipeCode, modelYearId));
             }
+
+            valuesByFipeCache.set(cacheKey, values, 86400);
 
             return values;
         } catch (error) {
@@ -113,8 +143,10 @@ export default class ValuesService {
             let code: string = '0';
 
             for (let i = 1; i <= 3; i++) {
+                const refereceTablesService = new RefereceTablesService();
+
                 const body: ValueRequestByFipe = {
-                    codigoTabelaReferencia: await referenceTablesHelper.getLatest(),
+                    codigoTabelaReferencia: await refereceTablesService.getLatest(),
                     codigoTipoVeiculo: i.toString(),
                     anoModelo: modelYearId.split('-')[0],
                     modeloCodigoExterno: fipeCode,
@@ -143,6 +175,13 @@ export default class ValuesService {
 
     public getByFipeAndModelYear = async (fipeCode: string, modelYearId: string): Promise<Value> => {
         try {
+            const valueCached = valuesByFipeAndModelYearCache.get(cacheKey);
+
+            if (valueCached !== undefined && valueCached !== null) {
+                const value: Value = valueCached as Value;
+                if (value.codigoFipe === fipeCode && value.idAnoModelo === modelYearId) return value;
+            }
+
             const { vehicleId, brand, model } = await this.requestByFipeAndModelYear(fipeCode, modelYearId);
 
             const brandsService = new BrandsService(vehicleId);
@@ -151,7 +190,10 @@ export default class ValuesService {
             const modelsService = new ModelsService(vehicleId, brandId);
             const modelId: string = await modelsService.findId(model);
 
-            const value: Value = await this.getTradicional(vehicleId, brandId, modelId, modelYearId);
+            const value: Value = await this.getTraditional(vehicleId, brandId, modelId, modelYearId);
+
+            valuesByFipeAndModelYearCache.set(cacheKey, value, 86400);
+
             return value;
         } catch (error) {
             throw error;

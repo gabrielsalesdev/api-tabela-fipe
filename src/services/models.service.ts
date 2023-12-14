@@ -1,9 +1,14 @@
 import axios from 'axios';
-import referenceTablesHelper from "../helpers/reference-tables.helper";
+import NodeCache from 'node-cache';
 import errorsHelper from '../helpers/errors.helper';
+import dotenvConfig from '../config/dotenv.config';
+import RefereceTablesService from './reference-tables.service';
 import { ModelRequest } from "../interfaces/model-request.interface";
 import { ModelResponse } from '../interfaces/model-response.interface';
 import { Model } from '../interfaces/model.interface';
+
+const modelsCache = new NodeCache();
+const cacheKey: string = dotenvConfig.cache.key as string;
 
 export default class ModelsService {
     vehicleId: string;
@@ -16,8 +21,10 @@ export default class ModelsService {
 
     private request = async (): Promise<ModelResponse> => {
         try {
+            const refereceTablesService = new RefereceTablesService();
+
             const body: ModelRequest = {
-                codigoTabelaReferencia: await referenceTablesHelper.getLatest(),
+                codigoTabelaReferencia: await refereceTablesService.getLatest(),
                 codigoTipoVeiculo: this.vehicleId,
                 codigoMarca: this.brandId
             };
@@ -34,9 +41,17 @@ export default class ModelsService {
 
     public get = async (): Promise<Model[]> => {
         try {
-            const modelsRequest: ModelResponse = await this.request();
+            const modelsCached = modelsCache.get(cacheKey);
 
-            const models: Model[] = modelsRequest.Modelos.map(model => {
+            if (modelsCached !== undefined && modelsCached !== null) {
+                const models: Model[] = modelsCached as Model[];
+                console.log('entrou no cache');
+                if (models[0].idVeiculo === this.vehicleId && models[0].idMarca === this.brandId) return models;
+            }
+
+            const modelsResponse: ModelResponse = await this.request();
+
+            const models: Model[] = modelsResponse.Modelos.map(model => {
                 return {
                     idVeiculo: this.vehicleId,
                     idMarca: this.brandId,
@@ -44,6 +59,9 @@ export default class ModelsService {
                     nomeModelo: model.Label
                 }
             });
+
+            modelsCache.set(cacheKey, models, 86400);
+
             return models;
         } catch (error) {
             throw error;
