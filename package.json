@@ -2,10 +2,10 @@
   "name": "api-tabela-fipe",
   "version": "1.0.0",
   "description": "API RESTful da Tabela Fipe",
-  "main": "./src/server.js",
+  "main": "./src/server.ts",
   "scripts": {
     "build": "npm install",
-    "start": "node ./src/server.js",
+    "start": "node ./dist/server.js",
     "dev": "nodemon"
   },
   "keywords": [],
